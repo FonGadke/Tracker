@@ -15,7 +15,7 @@ struct ActualView: View {
     var body: some View {
         NavigationView {
             MasterViewTask()
-                .navigationBarTitle(Text("Актуальное"))
+                .navigationBarTitle(Text("Актуальное"), displayMode: .inline)
                 .navigationBarItems(
                     leading: EditButton(),
                     trailing: NavigationLink(destination: CreateNewTaskView()){
@@ -27,6 +27,7 @@ struct ActualView: View {
 }
 
 struct MasterViewTask: View {
+
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Task.time, ascending: true)],
         animation: .default)

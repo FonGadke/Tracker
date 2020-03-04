@@ -16,7 +16,7 @@ struct TimeTableView: View {
         NavigationView {
             WeeksView()
                 .accentColor(Color.primary)
-                .navigationBarTitle(Text("Расписание"))
+                .navigationBarTitle(Text("Расписание"), displayMode: .inline)
         }
     }
 }
@@ -43,28 +43,31 @@ struct WeekDay: View {
     let day: Day
     
     var body: some View {
-        let lessons = day.lessons!.allObjects as! [Lesson]
-        return
-            VStack {
-                HStack {
-                    Text(day.name!)
-                    Spacer()
-                }
-                .padding(.bottom, 5)
-                VStack(alignment: .leading) {
-                    ForEach(lessons, id: \.self) { lesson in
-                        ForEachBuilder {
-                            SubjectRow(lesson: lesson)
-                                .padding(.horizontal, 5)
-                            Divider()
-                        }
+        var lessons = day.lessons!.allObjects as! [Lesson]
+        // TODO
+        lessons.sort { (first, second) -> Bool in
+            return true
+        }
+        return VStack {
+            HStack {
+                Text(day.name!)
+                Spacer()
+            }
+            .padding(.bottom, 5)
+            VStack(alignment: .leading) {
+                ForEach(lessons, id: \.self) { lesson in
+                    ForEachBuilder {
+                        SubjectRow(lesson: lesson)
+                            .padding(.horizontal, 5)
+                        Divider()
                     }
                 }
-                .padding(.top, 10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.black, lineWidth: 1)
-                )
+            }
+            .padding(.top, 10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.black, lineWidth: 1)
+            )
         }
     }
 }
@@ -86,7 +89,7 @@ struct ForEachBuilder<Content>: View where Content: View {
 struct SubjectRow: View {
     let lesson: Lesson
     var body: some View {
-        return NavigationLink(destination: Text(lesson.name!.name!)) {
+        return NavigationLink(destination: CreateNewTaskView(subject: lesson.name)) {
             VStack {
                 Text(lesson.startTime!)
                 Image(systemName: "clock")
@@ -98,7 +101,7 @@ struct SubjectRow: View {
                 Text(lesson.teacher!)
                     .font(.subheadline)
                     .foregroundColor(Color.gray)
-                Text("Ауд. 322")
+                Text("Ауд. " + lesson.classroom!)
             }
             Spacer()
         }
