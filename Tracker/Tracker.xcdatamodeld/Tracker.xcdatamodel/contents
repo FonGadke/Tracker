@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Day" representedClassName="Day" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="number" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="lessons" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Lesson" inverseName="day" inverseEntity="Lesson"/>
+    </entity>
+    <entity name="Lesson" representedClassName="Lesson" syncable="YES" codeGenerationType="class">
+        <attribute name="classroom" optional="YES" attributeType="String"/>
+        <attribute name="endTime" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="startTime" optional="YES" attributeType="String"/>
+        <attribute name="teacher" optional="YES" attributeType="String"/>
+        <relationship name="day" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Day" inverseName="lessons" inverseEntity="Day"/>
+        <relationship name="name" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Subject" inverseName="lessons" inverseEntity="Subject"/>
+    </entity>
+    <entity name="Subject" representedClassName="Subject" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="lessons" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Lesson" inverseName="name" inverseEntity="Lesson"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Task" inverseName="subject" inverseEntity="Task"/>
+    </entity>
+    <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="class">
+        <attribute name="descript" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="subject" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Subject" inverseName="tasks" inverseEntity="Subject"/>
+    </entity>
+    <elements>
+        <element name="Day" positionX="-239.44140625" positionY="67.234375" width="128" height="103"/>
+        <element name="Lesson" positionX="-30.4296875" positionY="95.3984375" width="128" height="148"/>
+        <element name="Subject" positionX="184.29296875" positionY="126.6953125" width="128" height="103"/>
+        <element name="Task" positionX="386.9375" positionY="111.6328125" width="128" height="118"/>
+    </elements>
+</model>
