@@ -19,30 +19,51 @@ struct CreateNewTaskView: View {
     
     @State var title: String = ""
     @State var content: String = ""
-    @State var data: Data = Data()
-    @State var chosenSubject = 2
+    @State var data: Date = Date()
+    @State var chosenSubject = 0
     
-    var subjects = ["парю прог", "пирог","лол кек", "С++", "парю прог", "пирог","лол кек", "С++"]
-    //    let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Subject.name, ascending: true)],
+        animation: .default)
+    var subjects: FetchedResults<Subject>
+    
+    func initChosenSubject() -> Void {
+        if (subject != nil) {
+            for i in 0...(self.subjects.count - 1) {
+                if subject == self.subjects[i] {
+                    chosenSubject = i
+                    return
+                }
+            }
+        }
+    }
     
     var body: some View {
         NavigationView {
             Form {
                 Picker(selection: $chosenSubject, label: Text("Предмет")) {
                     ForEach(0 ..< subjects.count) {
-                        Text(self.subjects[$0])
+                        Text(self.subjects[$0].name!)
                     }
                 }
-                DatePicker(selection: .constant(Date()), label: { Text("Дата") })
+                DatePicker(selection: $data,
+                           in: Date()..., 
+                           displayedComponents: .date,
+                           label: { Text("Дата") })
                 TextField("Название", text: $title)
                 TextField("Заметка", text: $content)
                 Button(action: {
+                    if (self.title != "") {
+                        Task.create(subject: self.subjects[self.chosenSubject], time: self.data, title: self.title, content: self.content, in: self.viewContext)
+                    }
                     self.mode.wrappedValue.dismiss()
                 }) {
                     Text("OK")
                 }
             }
-            .navigationBarTitle(Text("Новая заметка"))
+            .navigationBarTitle(Text("Новая задача"))
+        }.onAppear {
+            self.initChosenSubject()
         }
     }
 }

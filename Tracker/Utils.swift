@@ -43,3 +43,13 @@ extension Collection where Element == Task, Index == Int {
         }
     }
 }
+
+func cmp(lhs: String, rhs: String) -> Bool {
+    let d0 = lhs.firstIndex(of: ":")!
+    let h0 = Int(lhs.prefix(upTo: d0))
+    let m0 = Int(lhs.suffix(from: d0).dropFirst())
+    let d1 = rhs.firstIndex(of: ":")!
+    let h1 = Int(rhs.prefix(upTo: d1))
+    let m1 = Int(rhs.suffix(from: d1).dropFirst())
+    return (h0! < h1!) || (h0 == h1 && m0! < m1!)
+}

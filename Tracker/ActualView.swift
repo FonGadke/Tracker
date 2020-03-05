@@ -40,14 +40,14 @@ struct MasterViewTask: View {
         List {
             ForEach(tasks, id: \.self) { task in
                 NavigationLink(
-                    destination: ChangeTaskView(oldTask: task)
+                    destination: ChangeTaskView(task: task)
                 ) {
                     Text(task.title!)
                 }
             }
-//            .onDelete { indices in
-//                self.tasks.delete(at: indices, from: self.viewContext)
-//            }
+            .onDelete { indices in
+                self.tasks.delete(at: indices, from: self.viewContext)
+            }
         }
     }
 }

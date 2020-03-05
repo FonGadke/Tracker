@@ -44,9 +44,8 @@ struct WeekDay: View {
     
     var body: some View {
         var lessons = day.lessons!.allObjects as! [Lesson]
-        // TODO
         lessons.sort { (first, second) -> Bool in
-            return true
+            return cmp(lhs: first.startTime!, rhs: second.startTime!)
         }
         return VStack {
             HStack {
