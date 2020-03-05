@@ -39,27 +39,38 @@ struct ChangeTaskView: View {
     var body: some View {
         NavigationView {
             Form {
-                Picker(selection: $chosenSubject, label: Text("Предмет")) {
-                    ForEach(0 ..< subjects.count) {
-                        Text(self.subjects[$0].name!)
+                Section(header: Text("General information")) {
+                    Picker(selection: $chosenSubject, label: Text("Предмет")) {
+                        ForEach(0 ..< subjects.count) {
+                            Text(self.subjects[$0].name!)
+                        }
                     }
+                    DatePicker(selection: $data,
+                               in: Date()...,
+                               displayedComponents: .date,
+                               label: { Text("Дата") })
                 }
-                DatePicker(selection: $data,
-                           in: Date()...,
-                           displayedComponents: .date,
-                           label: { Text("Дата") })
-                TextField("Название", text: $title)
-                TextField("Заметка", text: $content)
-                Button(action: {
-                    if (self.title != "") {
-                        self.task.title = self.title
-                        self.task.descript = self.content
-                        self.task.time = self.data
-                        self.task.subject = self.subjects[self.chosenSubject]
+                Section(header: Text("About")) {
+                    TextField("Название", text: $title)
+                    TextField("Заметка", text: $content)
+                }
+                Section {
+                    Button(action: {
+                        if (self.title != "") {
+                            self.task.title = self.title
+                            self.task.descript = self.content
+                            self.task.time = self.data
+                            self.task.subject = self.subjects[self.chosenSubject]
+                            do {
+                                try self.viewContext.save()
+                            } catch {
+                                print(error)
+                            }
+                        }
+                        self.mode.wrappedValue.dismiss()
+                    }) {
+                        Text("OK")
                     }
-                    self.mode.wrappedValue.dismiss()
-                }) {
-                    Text("OK")
                 }
             }
             .navigationBarTitle(Text("Изменить задачу"))

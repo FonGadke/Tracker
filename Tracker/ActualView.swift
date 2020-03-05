@@ -17,17 +17,17 @@ struct ActualView: View {
             MasterViewTask()
                 .navigationBarTitle(Text("Актуальное"), displayMode: .inline)
                 .navigationBarItems(
-                    leading: EditButton(),
-                    trailing: NavigationLink(destination: CreateNewTaskView()){
-                        Image(systemName: "plus")
-                    }
+                    leading: EditButton()
+//                  trailing: NavigationLink(destination: CreateNewTaskView()){
+//                  Image(systemName: "plus")
+//                  }
             )
         }.navigationViewStyle(DoubleColumnNavigationViewStyle())
     }
 }
 
 struct MasterViewTask: View {
-
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Task.time, ascending: true)],
         animation: .default)
@@ -42,7 +42,15 @@ struct MasterViewTask: View {
                 NavigationLink(
                     destination: ChangeTaskView(task: task)
                 ) {
-                    Text(task.title!)
+                    HStack {
+                        Text(task.title!)
+                        Spacer()
+                        VStack(alignment: .trailing) {
+                            Text("\(task.time!, formatter: dateFormatter)")
+                                .font(.subheadline)
+                                .foregroundColor(Color.gray)
+                        }
+                    }
                 }
             }
             .onDelete { indices in
@@ -51,6 +59,13 @@ struct MasterViewTask: View {
         }
     }
 }
+
+private let dateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .medium
+    dateFormatter.timeStyle = .none
+    return dateFormatter
+}()
 
 struct ActualView_Previews: PreviewProvider {
     static var previews: some View {

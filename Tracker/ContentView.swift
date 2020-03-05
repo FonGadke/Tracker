@@ -10,18 +10,23 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        TabView {
-            ActualView()
-                .tabItem {
-                    Image(systemName: "flame")
-                    Text("Актуальное")
-            }
-            TimeTableView()
-                .tabItem {
-                    Image(systemName: "calendar")
-                    Text("Расписание")
-            }
-        }
+        UIKitTabView([
+            UIKitTabView.Tab(view: ActualView(), title: "Актуальное", image: "flame"),
+            UIKitTabView.Tab(view: TimeTableView(), title: "Расписание", image: "calendar"),
+            UIKitTabView.Tab(view: MotivationView(), title: "Мотивация", image: "bolt")
+        ])
+//        TabView {
+//            ActualView()
+//                .tabItem {
+//                    Image(systemName: "flame")
+//                    Text("Актуальное")
+//            }
+//            TimeTableView()
+//                .tabItem {
+//                    Image(systemName: "calendar")
+//                    Text("Расписание")
+//            }
+//        }
     }
 }
 

@@ -41,24 +41,30 @@ struct CreateNewTaskView: View {
     var body: some View {
         NavigationView {
             Form {
-                Picker(selection: $chosenSubject, label: Text("Предмет")) {
-                    ForEach(0 ..< subjects.count) {
-                        Text(self.subjects[$0].name!)
+                Section(header: Text("General information")) {
+                    Picker(selection: $chosenSubject, label: Text("Предмет")) {
+                        ForEach(0 ..< subjects.count) {
+                            Text(self.subjects[$0].name!)
+                        }
                     }
+                    DatePicker(selection: $data,
+                               in: Date()...,
+                               displayedComponents: .date,
+                               label: { Text("Дата") })
                 }
-                DatePicker(selection: $data,
-                           in: Date()..., 
-                           displayedComponents: .date,
-                           label: { Text("Дата") })
-                TextField("Название", text: $title)
-                TextField("Заметка", text: $content)
-                Button(action: {
-                    if (self.title != "") {
-                        Task.create(subject: self.subjects[self.chosenSubject], time: self.data, title: self.title, content: self.content, in: self.viewContext)
+                Section(header: Text("About")) {
+                    TextField("Название", text: $title)
+                    TextField("Заметка", text: $content)
+                }
+                Section {
+                    Button(action: {
+                        if (self.title != "") {
+                            Task.create(subject: self.subjects[self.chosenSubject], time: self.data, title: self.title, content: self.content, in: self.viewContext)
+                        }
+                        self.mode.wrappedValue.dismiss()
+                    }) {
+                        Text("OK")
                     }
-                    self.mode.wrappedValue.dismiss()
-                }) {
-                    Text("OK")
                 }
             }
             .navigationBarTitle(Text("Новая задача"))
